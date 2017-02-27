@@ -1,0 +1,269 @@
+#query displaying top brands and their top bikes  
+curl -XGET "http://localhost:9200/_search?pretty" -d'
+{
+  "size": 0,
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "query_string": {
+            "query": "*",
+            "analyze_wildcard": true
+          }
+        }
+      ],
+      "must_not": []
+    }
+  },
+  "aggs": {
+    "products": {
+      "nested": {
+        "path": "products.traits"
+      },
+      "aggs": {
+        "top brands": {
+          "filter": {
+            "term": {
+              "products.traits.key.raw": "Product Brand"
+            }
+          },
+          "aggs": {
+            "value": {
+              "terms": {
+                "field": "products.traits.value.raw",
+                "size": 2,
+                "order": {
+                  "_count": "desc"
+                }
+              },
+              "aggs": {
+                "user": {
+                  "reverse_nested": {},
+                  "aggs": {
+                    "products": {
+                      "nested": {
+                        "path": "products.traits"
+                      },
+                      "aggs": {
+                        "top brands": {
+                          "filter": {
+                            "term": {
+                              "products.traits.key.raw": "Product Name"
+                            }
+                          },
+                          "aggs": {
+                            "value": {
+                              "terms": {
+                                "field": "products.traits.value.raw",
+                                "size": 2,
+                                "order": {
+                                  "_count": "desc"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}'
+
+
+#number of users who viewd the top 3 brand along with names of top 3 users
+curl -XGET "http://localhost:9200/_search?pretty" -d'
+{
+  "size": 0,
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "query_string": {
+            "query": "*",
+            "analyze_wildcard": true
+          }
+        }
+      ],
+      "must_not": []
+    }
+  },
+  "aggs": {
+    "products": {
+      "nested": {
+        "path": "products.traits"
+      },
+      "aggs": {
+        "top brands": {
+          "filter": {
+            "term": {
+              "products.traits.key.raw": "Product Brand"
+            }
+          },
+          "aggs": {
+            "value": {
+              "terms": {
+                "field": "products.traits.value.raw",
+                "size": 3,
+                "order": {
+                  "_count": "desc"
+                }
+              },
+              "aggs": {
+                "user": {
+                  "reverse_nested": {},
+                  "aggs": {
+                    "count_by_type": {
+                      "terms": {
+                        "size":3,
+                        "field": "user_id.raw"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}'
+
+
+#cities of the top 3 users of top 3 brands 
+curl -XGET "http://localhost:9200/_search?pretty" -d'
+{
+  "size": 0,
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "query_string": {
+            "query": "*",
+            "analyze_wildcard": true
+          }
+        }
+      ],
+      "must_not": []
+    }
+  },
+  "aggs": {
+    "products": {
+      "nested": {
+        "path": "products.traits"
+      },
+      "aggs": {
+        "top brands": {
+          "filter": {
+            "term": {
+              "products.traits.key.raw": "Product Brand"
+            }
+          },
+          "aggs": {
+            "value": {
+              "terms": {
+                "field": "products.traits.value.raw",
+                "size": 3,
+                "order": {
+                  "_count": "desc"
+                }
+              },
+              "aggs": {
+                "user": {
+                  "reverse_nested": {},
+                  "aggs": {
+                    "count_by_type": {
+                      "terms": {
+                        "size": 3,
+                        "field": "user_id.raw"
+                      },
+                      "aggs": {
+                        "cities": {
+                          "terms": {
+                            "field": "city.raw",
+                            "size": 1
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+'
+
+
+#top 3 browsers in which top 3 brands were viewd 
+curl -XGET "http://localhost:9200/_search?pretty" -d'
+{
+  "size": 0,
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "query_string": {
+            "query": "*",
+            "analyze_wildcard": true
+          }
+        }
+      ],
+      "must_not": []
+    }
+  },
+  "aggs": {
+    "products": {
+      "nested": {
+        "path": "products.traits"
+      },
+      "aggs": {
+        "top brands": {
+          "filter": {
+            "term": {
+              "products.traits.key.raw": "Product Brand"
+            }
+          },
+          "aggs": {
+            "value": {
+              "terms": {
+                "field": "products.traits.value.raw",
+                "size": 3,
+                "order": {
+                  "_count": "desc"
+                }
+              },
+              "aggs": {
+                "browser": {
+                  "reverse_nested": {},
+                  "aggs": {
+                    "browser_names": {
+                      "terms": {
+                        "field": "browser.raw",
+                        "size": 3,
+                        "order": {
+                          "_count": "desc"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}'

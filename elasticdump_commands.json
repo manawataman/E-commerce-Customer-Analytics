@@ -1,0 +1,15 @@
+elasticdump \
+ --input="/users/amanmanawat/documents/machine learning /customerlabs assignment /mapping.json" \
+ --output=http://localhost:9200/clabs_two \
+ --type=mapping
+
+
+ elasticdump \
+ --input="/users/amanmanawat/documents/machine learning /customerlabs assignment /credr_dataset.json" \
+ --output=http://localhost:9200/clabs_two \
+ --type=data
+
+curl 'localhost:9200/_cat/indices?v'
+
+
+
