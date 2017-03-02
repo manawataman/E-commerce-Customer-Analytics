@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p><b>Top 3 bikes and their count</b></p>
+    <p id="bikes"></p>
+     <script>
+        var djangoData = '{{ array | safe }}';
+        var data = JSON.parse(djangoData);
+        console.log(data[1][1]);
+        var text = " ";
+        var d = data[2][1]
+        console.log(d);
+        for(i in d)
+        {if(typeof d[i] ==='string'){
+        text += "<br>"+"<b>" + d[i] +"</b>"+"<br>";
+        }else{
+        text += "<br>" + d[i] + "<br>";
+        }
+        }
+        document.getElementById("bikes").innerHTML = text;
+    </script>
+<a href="/dashboards">go back</a>
+</body>
+</html>
