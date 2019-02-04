@@ -20,11 +20,17 @@ About mapping:
 The dataset has self explaining field names. The data in some fields are simple string while others are nested objects. 
 
 traits - This nested object has personal information about a user like name, email, phone, etc.
+
 cl_utm_params & cl_other_params - These are the url parameters of the webpage the user is visiting.
+
 attributes - This object has data about an action the user is performing(eg: if the action is pageview, we send the url the user has viewed in the attributes)
+
 products - This object has info about the products for which the action is taken(eg: if the action is product viewed, we send the data about the product he has viewed in this object).
+
 cl_triggered_ts - This is the time the user has performed the action.
+
 user_id - Unique id of a user.
+
 session_id - Unique id of a user's session
 
 
