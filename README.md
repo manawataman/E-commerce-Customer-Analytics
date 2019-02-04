@@ -14,7 +14,7 @@ The sample dataset has information about user actions like
 Added to cart', 
 'Checkout made', 
 'User registered', 
-'pageview'. T
+'pageview'. 
 
 About mapping:
 The dataset has self explaining field names. The data in some fields are simple string while others are nested objects. 
